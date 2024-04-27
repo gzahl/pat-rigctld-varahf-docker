@@ -20,6 +20,6 @@ if [ ! -d ~/.wine/drive_c ]; then
 	mv 'VARA setup (Run as Administrator).exe' .wine/drive_c/vara_setup.exe
 	wine ~/.wine/drive_c/vara_setup.exe /SILENT
 fi
-wine ~/.wine/drive_c/VARA/VARA.exe
+#wine ~/.wine/drive_c/VARA/VARA.exe
 bash
 

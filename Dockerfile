@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim as build
+FROM debian:bookworm-slim as box-build
 
 EXPOSE 5900
 
@@ -27,10 +27,15 @@ RUN git clone https://github.com/ptitSeb/box64 \
  && make -j$(nproc) \
  && make install DESTDIR=/box
 
+FROM docker.io/golang:1.22.2-bookworm AS pat-build
+WORKDIR /pat
+RUN go install github.com/la5nta/pat@latest
+
 FROM debian:bookworm-slim
 
 # Copy compiled box86 and box64 binaries
-COPY --from=build /box /
+COPY --from=box-build /box /
+COPY --from=pat-build /go/bin/pat /bin/pat
 
 # Install libraries needed to run box
 RUN dpkg --add-architecture armhf \
@@ -40,7 +45,7 @@ RUN dpkg --add-architecture armhf \
 # `cabextract` is needed by winetricks to install most libraries
 # `xvfb` is needed in wine to spawn display window because some Windows program can't run without it (using `xvfb-run`)
 # If you are sure you don't need it, feel free to remove
-RUN apt install -y cabextract xvfb x11vnc fluxbox unzip
+RUN apt-get install --yes --no-install-recommends cabextract xvfb x11vnc fluxbox unzip libhamlib-utils
 
 # Clean up
 RUN apt-get -y autoremove \
