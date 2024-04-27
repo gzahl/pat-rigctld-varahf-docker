@@ -14,7 +14,7 @@ make run
 
 ## Thanks
 This is based heavily on
-https://github.com/dirtboll/winebox64
-https://github.com/WheezyE/Winelink
-https://github.com/solarkennedy/wine-x11-novnc-docker
+* https://github.com/dirtboll/winebox64
+* https://github.com/WheezyE/Winelink
+* https://github.com/solarkennedy/wine-x11-novnc-docker
 
