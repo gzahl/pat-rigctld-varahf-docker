@@ -45,7 +45,7 @@ RUN dpkg --add-architecture armhf \
 # `cabextract` is needed by winetricks to install most libraries
 # `xvfb` is needed in wine to spawn display window because some Windows program can't run without it (using `xvfb-run`)
 # If you are sure you don't need it, feel free to remove
-RUN apt-get install --yes --no-install-recommends cabextract xvfb x11vnc fluxbox unzip libhamlib-utils
+RUN apt-get install --yes --no-install-recommends cabextract xvfb x11vnc fluxbox unzip libhamlib-utils supervisor
 
 # Clean up
 RUN apt-get -y autoremove \
@@ -67,8 +67,9 @@ WORKDIR /root
 ENV DISPLAY :99
 ENV X11VNC_PASSWORD="123456"
 
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD ./entrypoint.sh /opt/entrypoint.sh
-ENTRYPOINT bash -c /opt/entrypoint.sh
-#ENTRYPOINT ["bash", "-c"]
+ADD ./start-vara.sh /root/start-vara.sh
+#ENTRYPOINT bash -c /opt/entrypoint.sh
 
-#CMD ["bash"]
+CMD ["/usr/bin/supervisord"]
