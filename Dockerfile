@@ -1,8 +1,6 @@
 FROM debian:bookworm-slim as box-build
 
-EXPOSE 5900
-
-ENV  DEBIAN_FRONTEND="noninteractive"
+ENV DEBIAN_FRONTEND="noninteractive"
 
 # Install libraries needed to compile box
 RUN dpkg --add-architecture armhf \
@@ -35,7 +33,7 @@ FROM debian:bookworm-slim
 
 # Copy compiled box86 and box64 binaries
 COPY --from=box-build /box /
-COPY --from=pat-build /go/bin/pat /bin/pat
+COPY --from=pat-build /go/bin/pat /usr/bin/pat
 
 # Install libraries needed to run box
 RUN dpkg --add-architecture armhf \
@@ -52,6 +50,9 @@ RUN apt-get -y autoremove \
  && apt-get clean autoclean \
  && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists
 
+ENV WINE32PREFIX=/root/.config/wine32
+ENV WINE64PREFIX=/root/.config/wine64
+
 # Install wine, wine64, and winetricks
 COPY install-wine.sh /
 RUN bash /install-wine.sh \
@@ -64,12 +65,17 @@ RUN bash /wrap-wine.sh \
 
 WORKDIR /root
 
-ENV DISPLAY :99
 ENV X11VNC_PASSWORD="123456"
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD ./entrypoint.sh /opt/entrypoint.sh
-ADD ./start-vara.sh /root/start-vara.sh
-#ENTRYPOINT bash -c /opt/entrypoint.sh
+ADD ./run-vara.sh /root/run-vara.sh
 
-CMD ["/usr/bin/supervisord"]
+# VNC
+EXPOSE 5900
+# PAT
+EXPOSE 8080
+# supervisor
+EXPOSE 9001
+
+#CMD ["/usr/bin/supervisord"]
+CMD bash
