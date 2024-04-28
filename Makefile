@@ -9,3 +9,5 @@ run:
 	-p 8443:443/tcp \
 	-p 9001:9001/tcp \
 	gzahl/pat-rigctld-varahf-docker
+push:
+	podman push gzahl/pat-rigctld-varahf-docker
