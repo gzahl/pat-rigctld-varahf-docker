@@ -29,11 +29,15 @@ FROM docker.io/golang:1.22.2-bookworm AS pat-build
 WORKDIR /pat
 RUN go install github.com/la5nta/pat@latest
 
+FROM docker.io/caddy:2.7-builder-alpine AS caddy-build
+RUN xcaddy build
+
 FROM debian:bookworm-slim
 
 # Copy compiled box86 and box64 binaries
 COPY --from=box-build /box /
 COPY --from=pat-build /go/bin/pat /usr/bin/pat
+COPY --from=caddy-build /usr/bin/caddy /usr/bin/caddy
 
 # Install libraries needed to run box
 RUN dpkg --add-architecture armhf \
@@ -73,7 +77,7 @@ ADD ./run-vara.sh /root/run-vara.sh
 # VNC
 EXPOSE 5900
 # PAT
-EXPOSE 8080
+EXPOSE 443
 # supervisor
 EXPOSE 9001
 
