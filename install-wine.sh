@@ -29,14 +29,16 @@ DEB_B3="winehq-${branch}_${version}~${dist}${tag}_i386.deb" #shortcuts & docs
 
 # Install amd64-wine (64-bit) alongside i386-wine (32-bit)
 echo -e "Downloading wine . . ."
-wget -q ${LNKA}${DEB_A1} 
-wget -q ${LNKA}${DEB_A2} 
+#wget -q ${LNKA}${DEB_A1} 
+#wget -q ${LNKA}${DEB_A2} 
 wget -q ${LNKB}${DEB_B1} 
+wget -q ${LNKB}${DEB_B2} 
 
 echo -e "Extracting wine . . ."
-dpkg-deb -x ${DEB_A1} wine-installer
-dpkg-deb -x ${DEB_A2} wine-installer
+#dpkg-deb -x ${DEB_A1} wine-installer
+#dpkg-deb -x ${DEB_A2} wine-installer
 dpkg-deb -x ${DEB_B1} wine-installer
+dpkg-deb -x ${DEB_B2} wine-installer
 echo -e "Installing wine . . ."
 mv wine-installer/opt/wine* ~/wine
 
@@ -54,7 +56,7 @@ apt-get install -y libasound2-plugins:armhf libasound2:armhf libc6:armhf libcapi
     # then `dpkg-deb -I package.deb`. Read output, add `:armhf` to packages in dep list, then try installing them on Pi aarch64.
     
 # - these packages are needed for running box64/wine-amd64 on RPiOS (box64 only runs on 64-bit OS's)
-apt-get install -y libasound2-plugins:arm64 libasound2:arm64 libc6:arm64 libcapi20-3:arm64 libcups2:arm64 libdbus-1-3:arm64 libfontconfig1:arm64 libfreetype6:arm64 libglib2.0-0:arm64 libglu1-mesa:arm64 libgnutls30:arm64 libgphoto2-6:arm64 libgphoto2-port12:arm64 libgsm1:arm64 libgssapi-krb5-2:arm64 libgstreamer-plugins-base1.0-0:arm64 libgstreamer1.0-0:arm64 libjpeg62-turbo:arm64 libkrb5-3:arm64 libncurses6:arm64 libodbc1:arm64 libosmesa6:arm64 libpcap0.8:arm64 libpng16-16:arm64 libpulse0:arm64 libsane1:arm64 libsdl2-2.0-0:arm64 libtiff6:arm64 libudev1:arm64 libusb-1.0-0:arm64 libv4l-0:arm64 libx11-6:arm64 libxcomposite1:arm64 libxcursor1:arm64 libxext6:arm64 libxfixes3:arm64 libxi6:arm64 libxinerama1:arm64 libxrandr2:arm64 libxrender1:arm64 libxslt1.1:arm64 libxxf86vm1:arm64 ocl-icd-libopencl1:arm64 
+#apt-get install -y libasound2-plugins:arm64 libasound2:arm64 libc6:arm64 libcapi20-3:arm64 libcups2:arm64 libdbus-1-3:arm64 libfontconfig1:arm64 libfreetype6:arm64 libglib2.0-0:arm64 libglu1-mesa:arm64 libgnutls30:arm64 libgphoto2-6:arm64 libgphoto2-port12:arm64 libgsm1:arm64 libgssapi-krb5-2:arm64 libgstreamer-plugins-base1.0-0:arm64 libgstreamer1.0-0:arm64 libjpeg62-turbo:arm64 libkrb5-3:arm64 libncurses6:arm64 libodbc1:arm64 libosmesa6:arm64 libpcap0.8:arm64 libpng16-16:arm64 libpulse0:arm64 libsane1:arm64 libsdl2-2.0-0:arm64 libtiff6:arm64 libudev1:arm64 libusb-1.0-0:arm64 libv4l-0:arm64 libx11-6:arm64 libxcomposite1:arm64 libxcursor1:arm64 libxext6:arm64 libxfixes3:arm64 libxi6:arm64 libxinerama1:arm64 libxrandr2:arm64 libxrender1:arm64 libxslt1.1:arm64 libxxf86vm1:arm64 ocl-icd-libopencl1:arm64 
     # This list found by downloading...
     #	wget https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/wine-staging-amd64_8.11~bookworm-1_amd64.deb
     #	wget https://dl.winehq.org/wine-builds/debian/dists/bookworm/main/binary-amd64/wine-staging_8.11~bookworm-1_amd64.deb

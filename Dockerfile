@@ -32,12 +32,8 @@ RUN go install github.com/la5nta/pat@latest
 FROM docker.io/caddy:2.7-builder-alpine AS caddy-build
 RUN xcaddy build
 
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim as wine-build
 
-# Copy compiled box86 and box64 binaries
-COPY --from=box-build /box /
-COPY --from=pat-build /go/bin/pat /usr/bin/pat
-COPY --from=caddy-build /usr/bin/caddy /usr/bin/caddy
 
 # Install libraries needed to run box
 RUN dpkg --add-architecture armhf \
@@ -45,9 +41,8 @@ RUN dpkg --add-architecture armhf \
  && apt-get install --yes --no-install-recommends wget curl libc6:armhf libstdc++6:armhf ca-certificates
 
 # `cabextract` is needed by winetricks to install most libraries
-# `xvfb` is needed in wine to spawn display window because some Windows program can't run without it (using `xvfb-run`)
 # If you are sure you don't need it, feel free to remove
-RUN apt-get install --yes --no-install-recommends cabextract xvfb x11vnc fluxbox unzip libhamlib-utils supervisor
+RUN apt-get install --yes --no-install-recommends cabextract xvfb x11vnc fluxbox unzip libhamlib-utils supervisor xterm
 
 # Clean up
 RUN apt-get -y autoremove \
@@ -66,6 +61,15 @@ RUN bash /install-wine.sh \
 COPY wrap-wine.sh /
 RUN bash /wrap-wine.sh \
  && rm /wrap-wine.sh
+
+FROM wine-build
+
+# Copy compiled box86 and box64 binaries
+COPY --from=box-build /box /
+COPY --from=pat-build /go/bin/pat /usr/bin/pat
+COPY --from=caddy-build /usr/bin/caddy /usr/bin/caddy
+
+RUN apt-get install --yes --no-install-recommends xvfb x11vnc fluxbox unzip libhamlib-utils supervisor xterm
 
 WORKDIR /root
 
