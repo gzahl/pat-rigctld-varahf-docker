@@ -18,12 +18,12 @@ RUN git clone https://github.com/ptitSeb/box86 \
  && make install DESTDIR=/box 
 
 # Build box64
-RUN git clone https://github.com/ptitSeb/box64 \
- && mkdir box64/build \
- && cd box64/build \
- && cmake .. -DRPI4ARM64=1 -DARM_DYNAREC=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo \
- && make -j$(nproc) \
- && make install DESTDIR=/box
+#RUN git clone https://github.com/ptitSeb/box64 \
+# && mkdir box64/build \
+# && cd box64/build \
+# && cmake .. -DRPI4ARM64=1 -DARM_DYNAREC=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+# && make -j$(nproc) \
+# && make install DESTDIR=/box
 
 FROM docker.io/golang:1.22.2-bookworm AS pat-build
 WORKDIR /pat
