@@ -77,5 +77,4 @@ EXPOSE 8080
 # supervisor
 EXPOSE 9001
 
-#CMD ["/usr/bin/supervisord"]
-CMD bash
+CMD ["/usr/bin/supervisord"]
