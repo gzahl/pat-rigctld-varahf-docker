@@ -79,6 +79,7 @@ ENV X11VNC_PASSWORD="123456"
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD ./run-vara.sh /root/run-vara.sh
+ADD ./bootstrap.sh /root/bootstrap.sh
 
 # VNC
 EXPOSE 5900
