@@ -34,7 +34,6 @@ RUN xcaddy build
 
 FROM debian:bookworm-slim as wine-build
 
-
 # Install libraries needed to run box
 RUN dpkg --add-architecture armhf \
  && apt-get update \
@@ -69,7 +68,10 @@ COPY --from=box-build /box /
 COPY --from=pat-build /go/bin/pat /usr/bin/pat
 COPY --from=caddy-build /usr/bin/caddy /usr/bin/caddy
 
-RUN apt-get install --yes --no-install-recommends xvfb x11vnc fluxbox unzip libhamlib-utils supervisor xterm
+RUN apt-get install --yes --no-install-recommends \
+  xvfb x11vnc fluxbox xterm \
+  unzip supervisor \
+  libhamlib-utils
 
 WORKDIR /root
 
