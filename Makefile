@@ -1,8 +1,9 @@
 define RUN_CMD
 	mkdir -p config
 	podman run -it --rm \
-	--device /dev/serial/by-id/usb-1a86_USB_Dual_Serial_563E115774-if02 \
-	--device /dev/snd \
+	--device /dev/serial/by-id/usb-1a86_USB_Dual_Serial_563E115774-if00 \
+	-v /run/user/1000/pipewire-0:/tmp/pipewire-0 \
+	-e XDG_RUNTIME_DIR=/tmp \
 	--mount type=bind,source=config/,target=/root/.config \
 	-e RIGCTLD_ARGS="-m 3087 -r /dev/ttyACM0 -s 19200" \
 	-p 5900:5900/tcp \
